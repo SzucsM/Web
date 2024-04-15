@@ -1,0 +1,126 @@
+<form id="form1" runat="server" action="feldogozas.aspx" method="post">
+   
+        Nev: <input type="text" name="nev" /><br />
+        
+        <input type ="submit" value="kuldes"/>
+
+    </form>
+
+ if (Request.Form["nev"] != null) {
+                string kapottnev = Request.Form["nev"];
+                Response.Write("Nev: " + kapottnev + "<br />");
+
+            }
+
+get: request.QueryString
+//
+olvasas 
+try
+            {
+                string utvonal = Server.MapPath("~/dokumentum.txt");
+                StreamReader sr = new StreamReader(utvonal);
+
+                string sor = sr.ReadLine();
+                while (sor != null)
+                {
+                    TextBox1.Text += sor + "\n";
+                    sor = sr.ReadLine();
+                }
+                sr.Close();
+
+            }
+            catch (Exception error) {
+                TextBox1.Text = "Hiba" + error;
+            }
+//
+try
+            {
+                string utvonal = Server.MapPath("~/ujdokumentum.txt");
+                StreamWriter sw = new StreamWriter(utvonal);
+             
+                for (int i = 1; i <= 10; i++)
+                {
+                    sw.WriteLine(i);
+                }
+               
+                sw.Close();
+
+            }
+            catch (Exception error) {
+                TextBox1.Text = "Hiba" + error.Message;
+            }
+//
+<asp:GridView ID="GridView1" runat="server" AutoGenerateColumns="false">
+            <columns>
+                <asp:Boundfield Datafield="Elnevezes" HeaderText="Az etel neve"/>
+                <asp:Boundfield Datafield="Kategoria" HeaderText="Kategoria"/>
+                <asp:Boundfield Datafield="Nagysag" HeaderText="Nagysaga"/>
+                <asp:Boundfield Datafield="Ar" HeaderText="Ar"/>
+            </columns>
+            <EmptyDataTemplate>
+                    Nincs semmi!
+
+            </EmptyDataTemplate>
+        </asp:GridView>
+///////////////
+  public class etelek
+        {
+            private string kategoria;
+            private string elnevezes;
+            private string nagysag;
+            private string ar;
+
+            public string Kategoria {
+                get { return kategoria; }
+                set { kategoria = value; }
+            }
+            public string Elnevezes
+            {
+                get { return elnevezes; }
+                set { elnevezes = value; }
+            }
+            public string Nagysag
+            {
+                get { return nagysag; }
+                set { nagysag = value; }
+            }
+            public string Ar
+            {
+                get { return ar; }
+                set { ar = value; }
+            }
+////////////////////
+ try
+            {
+                List<etelek> lista = new List<etelek>();
+                string sor;
+                string utvonal = Server.MapPath("~/dokumentum.txt");
+                StreamReader sr = new StreamReader(utvonal);
+
+                while ((sor = sr.ReadLine()) != null)
+                {
+                    etelek item = new etelek();
+                    string[] line = sor.ToString().Split('|');
+
+                    if (line.Length < 2)
+                    {
+                        break;
+
+                    }
+                    item.Kategoria = line[0].Trim();
+                    item.Elnevezes = line[1].Trim();
+                    item.Nagysag = line[2].Trim();
+                    item.Ar = line[3].Trim();
+                    lista.Add(item);
+
+                }
+                sr.Close();
+
+                GridView1.DataSource = lista;
+                GridView1.DataBind();
+
+               
+            }
+            catch (Exception error) {
+                Response.Write(error.ToString());
+            }
