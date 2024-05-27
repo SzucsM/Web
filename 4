@@ -1,0 +1,156 @@
+Multheti Sanyi 2. feladat
+<%@ Page Language="C#" AutoEventWireup="true" CodeBehind="WebForm1.aspx.cs" Inherits="WebApplication2.WebForm1" %>
+
+<!DOCTYPE html>
+
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head runat="server">
+    <title></title>
+</head>
+<body>
+    <form id="form1" runat="server">
+    <div>
+    
+        <asp:Label ID="Label1" runat="server" Text="Diak neve:"></asp:Label>
+        <asp:TextBox ID="TextBox5" runat="server"></asp:TextBox>
+    
+    </div>
+        <asp:Label ID="Label2" runat="server" Text="Osztaly:"></asp:Label>
+        <asp:TextBox ID="TextBox6" runat="server"></asp:TextBox>
+        <p>
+            <asp:Label ID="Label3" runat="server" Text="Tantargy:"></asp:Label>
+            <asp:TextBox ID="TextBox7" runat="server"></asp:TextBox>
+        </p>
+        <asp:Label ID="Label4" runat="server" Text="1.jegy:"></asp:Label>
+        <asp:TextBox ID="TextBox1" runat="server"></asp:TextBox>
+        <asp:Label ID="Label5" runat="server" Text="2.jegy:"></asp:Label>
+        <asp:TextBox ID="TextBox2" runat="server"></asp:TextBox>
+        <asp:Label ID="Label6" runat="server" Text="3.jegy"></asp:Label>
+        <asp:TextBox ID="TextBox3" runat="server"></asp:TextBox>
+        <asp:Label ID="Label7" runat="server" Text="4.jegy"></asp:Label>
+        <asp:TextBox ID="TextBox4" runat="server"></asp:TextBox>
+        <p>
+            <asp:Button ID="Button1" runat="server" OnClick="Button1_Click" Text="Informacio a bevitt adatokrol:" />
+            <asp:Label ID="Label8" runat="server" Text="Label"></asp:Label>
+        </p>
+        <asp:Button ID="Button2" runat="server" OnClick="Button2_Click" Text="Atlag:" />
+        <asp:Label ID="Label9" runat="server" Text="Label"></asp:Label>
+    </form>
+</body>
+</html>
+
+
+
+
+
+using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.Web;
+using System.Web.UI;
+using System.Web.UI.WebControls;
+
+namespace WebApplication2
+{
+    public partial class WebForm1 : System.Web.UI.Page
+    {
+        protected void Page_Load(object sender, EventArgs e)
+        {
+
+        }
+
+        protected void Button1_Click(object sender, EventArgs e)
+        {
+            Class1 c = new Class1(TextBox5.Text, TextBox6.Text, TextBox7.Text, Convert.ToInt32(TextBox1.Text), Convert.ToInt32(TextBox2.Text), Convert.ToInt32(TextBox3.Text), Convert.ToInt32(TextBox4.Text));
+            Label8.Text = c.Informacio();
+        }
+
+        protected void Button2_Click(object sender, EventArgs e)
+        {
+            Class1 c = new Class1(TextBox5.Text, TextBox6.Text, TextBox7.Text, Convert.ToInt32(TextBox1.Text), Convert.ToInt32(TextBox2.Text), Convert.ToInt32(TextBox3.Text), Convert.ToInt32(TextBox4.Text));
+            Label9.Text =""+ c.atlag();
+        }
+    }
+}
+
+
+using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.Web;
+
+namespace WebApplication2
+{
+    public class Class1
+    {
+        private string nev;
+
+        public string Nev
+        {
+            get { return nev; }
+            set { nev = value; }
+        }
+        private string osztaly;
+
+        public string Osztaly
+        {
+            get { return osztaly; }
+            set { osztaly = value; }
+        }
+        private string tantargy;
+
+        public string Tantargy
+        {
+            get { return tantargy; }
+            set { tantargy = value; }
+        }
+        private int ejegy;
+
+        public int Ejegy
+        {
+            get { return ejegy; }
+            set { ejegy = value; }
+        }
+        private int mjegy;
+
+        public int Mjegy
+        {
+            get { return mjegy; }
+            set { mjegy = value; }
+        }
+        private int hjegy;
+
+        public int Hjegy
+        {
+            get { return hjegy; }
+            set { hjegy = value; }
+        }
+        private int njegy;
+
+        public int Njegy
+        {
+            get { return njegy; }
+            set { njegy = value; }
+        }
+        public Class1(string n,string o, string t, int elso, int masodik, int harmadik, int negyedik)
+        {
+            nev = n;
+            osztaly = o;
+            tantargy = t;
+            ejegy = elso;
+            mjegy = masodik;
+            hjegy = harmadik;
+            njegy = negyedik;
+        }
+
+        public string Informacio()
+        {
+            return "A tanulo neve:" + nev + ", osztalya:" + osztaly + ", tantargy:" + tantargy + ", " + ejegy + " " + mjegy + " " + hjegy + " " + njegy; 
+        }
+        public double atlag()
+        {
+            int osszeg=ejegy+mjegy+hjegy+njegy;
+            return osszeg / 4.0;
+        }
+    }
+}
