@@ -1,0 +1,377 @@
+1. doc
+public class Diak
+{
+private string vezeteknev;
+private string keresztnev;
+private string osztaly;
+private int eletkor;
+//konstruktor
+public Diak()
+{
+vezeteknev = "Alap";
+keresztnev = "Nev";
+osztaly = "nincs";
+eletkor = 0;
+}
+public Diak(string vnev, string knev, string oszt, int kor)
+{
+vezeteknev = vnev;
+keresztnev = knev;
+osztaly = oszt;
+eletkor = kor;
+}
+public string Vezeteknev
+{
+get { return vezeteknev; }
+set { vezeteknev = value; }
+}
+public string Keresztnev
+{
+get { return keresztnev; }
+set { keresztnev = value; }
+}
+public string Osztaly
+{
+get { return osztaly; }
+set { osztaly = value; }
+}
+public int Eletkor
+{
+get { return eletkor; }
+set { eletkor = value; }
+}
+
+Lengyel Sándor 3ITM Webprogramozás
+
+public string informacio()
+{
+string info = "A diák vezetékneve: "+vezeteknev+ ", keresztneve:
+"+keresztnev+", életkora: "+eletkor+ ", valamint a(z) "+osztaly+" osztályba jár.";
+return info;
+}
+}
+
+• Form-ra csak egy Label, és kiíratunk dolgokat:
+Diak elsoDiak = new Diak();
+Label1.Text = elsoDiak.informacio();
+Diak elsoDiak = new Diak("Lengyel","Sándor", "3ITM", 22);
+Label1.Text = elsoDiak.informacio();
+Label1.Text = elsoDiak.Keresztnev;
+/***************************/
+Önálló feladat: Készítsünk egy „Kör” nevű osztályt, amely körök kezelését valósítja meg. Egy
+tagja lesz, a sugár. A konstruktor 1-nek állítja be, míg a paraméteres a kapott értéknek. Két
+függvény: kerület, terület.
+public class Kor
+{
+private int r;
+public Kor()
+{
+r = 1;
+}
+public Kor(int sugar)
+{
+r = sugar;
+}
+public double Terület()
+{
+return r * r * Math.PI;
+}
+public double Kerület()
+{
+return 2 * r * Math.PI;
+}
+}
+
+Kor kiskor = new Kor(); // Kor kiskor = new Kor(5);
+Label1.Text = kiskor.Terület().ToString();
+Label2.Text = kiskor.Kerület().ToString();
+/************************************************************************************************************************************************************************************************/
+2. doc
+public class Teglalap
+{
+private int a;
+private int b;
+public int A
+{
+get { return a; }
+set { a = value; }
+}
+public int B
+{
+get { return b; }
+set { b = value; }
+}
+public Teglalap()
+{
+a = 1;
+b = 2;
+}
+public Teglalap(int a1, int b1)
+{
+a = a1;
+b = b1;
+}
+public int terulet()
+{
+return a * b;
+}
+public int kerulet()
+{
+return 2 * (a + b);
+}
+}
+• Teglalapform kódolás:
+Teglalap x = new Teglalap(5, 2);
+Label1.Text = x.terulet().ToString();
+Label2.Text = x.kerulet().ToString();
+
+Lengyel Sándor 3ITM Webprogramozás
+
+oldal 2 / 3
+• Mi adjuk át az értékeket (2 TextBox, Button)
+
+protected void Button1_Click(object sender, EventArgs e)
+{
+int a_oldal = Convert.ToInt32(TextBox1.Text);
+int b_oldal = Convert.ToInt32(TextBox2.Text);
+Teglalap x = new Teglalap(a_oldal, b_oldal);
+Label4.Text = x.terulet().ToString();
+Label6.Text = x.kerulet().ToString();
+}
+/**********************/
+Öröklődés
+Az OOP, és ezáltal a C# nyelv egyik alapköve az öröklődés, amivel új osztályokat írhatunk úgy, hogy
+azok bizonyos dolgokat átvesznek egy másik osztálytól.
+• Először definiálunk egy Allat osztályt, ami egy egyszerű metódussal rendelkezik, egy köszönés
+kiírására.
+public class Allat
+{
+public string Koszones()
+{
+return "Szia, én egy állat vagyok.";
+}
+}
+Allat sima = new Allat();
+Label1.Text = sima.Koszones();
+• Ezután definiálunk egy Kutya osztályt is, majd kettőspont segítségével megadjuk, hogy a Kutya
+osztály az Allat osztálytól kell örököljön. A legszebb ebben, hogy ennek a kapcsolatnak a való
+élet vetületében is tökéletes értelme van - egy kutya természetesen egyfajta állat. Használjuk
+most ezeket az osztályokat:
+public class Kutya : Allat
+{}
+Kutya rex = new Kutya();
+Label1.Text = rex.Koszones();
+• Ha futtatod a fenti példát, láthatod, hogy ugyan a Kutya osztályon nem definiáltunk koszones
+metódust, de ugyanúgy tudja, hogyan köszönjön nekünk, mivel ezt a metódust örökli az Animal
+osztálytól. Ez a köszönés azonban kicsit túl általános, ezért írjunk valami kutyához illőbbet.
+public class Allat
+{
+public virtual string Koszones()
+{
+return "Szia, én egy állat vagyok.";
+}
+}
+public class Kutya : Allat
+{
+public override string Koszones()
+{
+return "Vau vau, én egy kutya vagyok.";
+}
+}
+• A Kutya osztályon lévő új metódust mellett két dolgra kell felfigyelned: az Allat osztály
+metódusához a virtual, a Kutya osztályon pedig az override kulcsszót tettem hozzá. Ezzel
+felülírtuk az eredeti metódust. C#-ban nem írhatod felül (override) egy osztály tagját, ha az
+nincs virtualként megjelölve.
+Kutya rex = new Kutya();
+Label1.Text = rex.Koszones();
+/*********************************************************************************************************************************************************************************************************************************/
+3. doc
+Létrehozni egy Ember osztályt, ahol tároljuk a nevét, nemét és életkorát. Lesz egy
+konstruktora, ahol valamilyen alapértékeket adunk a private tagoknak. A paraméteres
+konstruktor pedig beállítja a kapott értékeket. Lesz egy Informacio függvény, mely egy
+szöveget ad vissza az ember adatairól.
+public class Ember
+{
+private string nev;
+private string nem;
+private int eletkor;
+public string Nev
+{
+get { return nev; }
+set { nev = value; }
+}
+public string Nem
+{
+get { return nem; }
+set { nem = value; }
+}
+public int Eletkor
+{
+get { return eletkor; }
+set { eletkor = value; }
+}
+public Ember()
+{
+nev = "Nincs neve";
+nem = "nincs meghatározva";
+eletkor = 0;
+}
+public Ember(string nev1, string nem1, int eletkor1)
+{
+nev = nev1;
+nem = nem1;
+eletkor = eletkor1;
+}
+public string Informacio()
+{
+return "Név: " + nev + ", nem: " + nem + ", életkor: " + eletkor + ".";
+}
+}
+
+Lengyel Sándor 3ITM Webprogramozás
+
+oldal 2 / 3
+
+protected void Button1_Click(object sender, EventArgs e)
+{
+Ember szemely = new Ember();
+szemely.Nev = TextBox1.Text;
+szemely.Nem = TextBox2.Text;
+szemely.Eletkor = Convert.ToInt32(TextBox3.Text);
+//vagy használni a konstruktort
+//Ember szemely1 = new Ember(TextBox1.Text, TextBox2.Text,
+Convert.ToInt32(TextBox3.Text));
+Label4.Text = szemely.Informacio();
+}
+Készíteni egy Superman osztályt, amely örököl az Ember osztályból. Lesz saját tagja, a
+szupererő (string). Az Informacio függvényt felülírni úgy, hogy a szupererőt is kiírassuk.
+
+o Informacio függvényt felülírni úgy lehet, hogy az eredeti Ember osztályban
+hozzátesszük a virtual kulcsszót a függvényhez. public virtual string
+Informacio()
+public class Superman : Ember
+{
+private string szuperero;
+public string Szuperero
+{
+get { return szuperero; }
+set { szuperero = value; }
+}
+public Superman(string nev1, string nem1, int eletkor1, string
+szuperero1):base(nev1,nem1,eletkor1)
+{
+szuperero = "repülés";
+}
+public override string Informacio()
+{
+return base.Informacio() + "Ja, és a szupererőm: "+szuperero;
+}
+}
+
+Lengyel Sándor 3ITM Webprogramozás
+
+oldal 3 / 3
+
+Superman szuper = new Superman(TextBox1.Text, TextBox2.Text,
+Convert.ToInt32(TextBox3.Text),TextBox4.Text);
+Label4.Text = szuper.Informacio();
+
+JAVÍTÁS A 03oop_gyakorlas.pdf dokumentumhoz:
+public Superman(string nev1, string nem1, int eletkor1, string
+szuperero1):base(nev1,nem1,eletkor1)
+{
+szuperero = szuperero1;
+}
+/**************************************************************************/
+Létrehozni egy Négyzet osztályt. Egyetlen tagja lesz, az oldal mérete (int a). A konstruktor 0-
+ra állítja a tagot. A paraméteres konstruktor hozzárendeli a kapott értéket. Két függvényt kell
+létrehozni: Terület (a*a), Kerület (4*a).
+o Webformon kiíratni a területet és kerületet Label(ekben) úgy, hogy csak simán
+létrehozzuk az objektumot (konstrukor).
+o Webformon kiíratni a területet és kerületet Label(ekben) úgy, hogy használjuk a
+paraméteres konstruktort.
+o Webformon kiíratni a területet és kerületet Label(ekben) egy gombra (Button)
+kattintva úgy, hogy egy szöveges beviteli mezőben (TextBox) bekérjük a négyzet
+oldalának nagyságát.
+using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.Web;
+
+
+namespace WebApplication1
+{
+    public class Class1
+   {
+       private int a;
+       private int kerulet;
+
+       public int Kerulet
+       {
+           get { return kerulet; }
+           set { kerulet = value; }
+       }
+       private int terulet;
+
+       public int Terulet
+       {
+           get { return terulet; }
+           set { terulet = value; }
+       }
+
+       public int A
+       {
+           get { return a; }
+           set { a = value; }
+       }
+        public int keruletszamolas(){
+            kerulet = 4 * a;
+            return kerulet;
+        }
+        public int teruletszamolas() { 
+            terulet=a*a;
+            return terulet;
+        }
+
+        public Class1() {
+            a = 0;
+        }
+        public Class1(int valami) {
+            a = valami;
+        }
+
+    }
+}
+using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.Web;
+using System.Web.UI;
+using System.Web.UI.WebControls;
+
+namespace WebApplication1
+{
+    public partial class WebForm1 : System.Web.UI.Page
+    {
+        protected void Page_Load(object sender, EventArgs e)
+        {
+            if (!IsPostBack)
+            {
+                Class1 szamolj = new Class1();
+                Label1.Text = "Alap:" + szamolj.teruletszamolas() + " ," + szamolj.keruletszamolas();
+                Class1 szamolj2 = new Class1(5);
+                Label2.Text = "Alap:" + szamolj2.teruletszamolas() + " ," + szamolj2.keruletszamolas();
+            }
+        }
+
+        protected void Button1_Click(object sender, EventArgs e)
+        {
+            
+            int a = Convert.ToInt32(TextBox1.Text);
+            Class1 szamolj3 = new Class1(a);
+            Label3.Text = "Alap:" + szamolj3.teruletszamolas() + " ," + szamolj3.keruletszamolas();
+            
+            
+        }
+    }
+}
